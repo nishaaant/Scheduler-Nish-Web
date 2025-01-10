@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ReactFlow, {
   addEdge,
   Controls,
@@ -6,17 +6,17 @@ import ReactFlow, {
   useNodesState,
   useEdgesState,
 } from "react-flow-renderer";
-import { sendEmail } from "../services/api";
 import NodeSidebar from "./NodeSidebar";
+import { sendEmail } from "../services/api";
 
 const initialNodes = [
-  { id: "1", type: "input", data: { label: "Start" }, position: { x: 250, y: 0 } },
+  { id: "1", type: "input", data: { label: "Start Node" }, position: { x: 250, y: 0 } },
 ];
 
-const FlowChart = () => {
+const Flowchart = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
-  const [nodeType, setNodeType] = useState("Cold Email");
+  const [selectedNode, setSelectedNode] = useState(null);
 
   const addNode = (nodeType) => {
     const id = `${nodes.length + 1}`;
@@ -25,34 +25,60 @@ const FlowChart = () => {
     setNodes((nds) => [...nds, newNode]);
   };
 
-  const onConnect = (params) => setEdges((eds) => addEdge(params, eds));
+  const handleNodeClick = (event, node) => {
+    setSelectedNode(node);
+  };
+
+  const handleInputChange = (field, value) => {
+    setSelectedNode((prev) => ({
+      ...prev,
+      data: { ...prev.data, [field]: value },
+    }));
+
+    setNodes((nds) =>
+      nds.map((node) =>
+        node.id === selectedNode.id
+          ? { ...node, data: { ...node.data, [field]: value } }
+          : node
+      )
+    );
+  };
+
+  useEffect(() => {
+    // Ensure selectedNode is synchronized with the latest node data.
+    if (selectedNode) {
+      const updatedNode = nodes.find((node) => node.id === selectedNode.id);
+      if (updatedNode) {
+        setSelectedNode(updatedNode);
+      }
+    }
+  }, [nodes, selectedNode]);
 
   const saveFlowchart = async () => {
-    const waitNodes = nodes.filter((node) => node.data.label === "Wait/Delay");
     const emailNodes = nodes.filter((node) => node.data.label === "Cold Email");
 
-    waitNodes.forEach(async (waitNode) => {
-      const emailNode = emailNodes.find((email) =>
-        edges.some(
-          (edge) => edge.source === waitNode.id && edge.target === email.id
-        )
-      );
+    for (const emailNode of emailNodes) {
+      const { email, time, body, subject } = emailNode.data;
 
-      if (emailNode) {
-        const payload = {
-          emailAddress: "user@mail.com",
-          time: "12:00:00", 
-          emailBody: "Hello there, this is body",
-          subject: "Subject for the mail",
-        };
-        try {
-          await sendEmail(payload);
-          alert("Email Scheduled!");
-        } catch (error) {
-          alert("Failed to schedule email.");
-        }
+      if (!email || !time || !body || !subject) {
+        alert(`Please fill all fields for Node ${emailNode.id}`);
+        continue;
       }
-    });
+
+      const payload = {
+        emailAddress: email,
+        time,
+        emailBody: body,
+        subject,
+      };
+
+      try {
+        await sendEmail(payload);
+        alert(`Email Scheduled for Node ${emailNode.id}!`);
+      } catch (error) {
+        alert(`Failed to schedule email for Node ${emailNode.id}`);
+      }
+    }
   };
 
   return (
@@ -64,21 +90,64 @@ const FlowChart = () => {
           edges={edges}
           onNodesChange={onNodesChange}
           onEdgesChange={onEdgesChange}
-          onConnect={onConnect}
-          style={{ background: "#f5f5f5" }}
+          onConnect={(params) => setEdges((eds) => addEdge(params, eds))}
+          onNodeClick={handleNodeClick}
+          fitView
         >
           <Controls />
           <Background color="#aaa" gap={16} />
         </ReactFlow>
-        <button
-          onClick={saveFlowchart}
-          className="absolute bottom-4 right-4 bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600"
-        >
-          Save Flowchart
-        </button>
       </div>
+      {selectedNode && (
+        <div className="w-1/4 p-4 bg-gray-100 border-l">
+          <h2 className="text-lg font-bold mb-4">Edit Node {selectedNode.id}</h2>
+          <div className="space-y-4">
+            <div>
+              <label className="block font-medium">Email Address:</label>
+              <input
+                type="email"
+                className="w-full p-2 border rounded"
+                value={selectedNode.data.email || ""}
+                onChange={(e) => handleInputChange("email", e.target.value)}
+              />
+            </div>
+            <div>
+              <label className="block font-medium">Time (HH:MM:SS):</label>
+              <input
+                type="time"
+                className="w-full p-2 border rounded"
+                value={selectedNode.data.time || ""}
+                onChange={(e) => handleInputChange("time", e.target.value)}
+              />
+            </div>
+            <div>
+              <label className="block font-medium">Subject:</label>
+              <input
+                type="text"
+                className="w-full p-2 border rounded"
+                value={selectedNode.data.subject || ""}
+                onChange={(e) => handleInputChange("subject", e.target.value)}
+              />
+            </div>
+            <div>
+              <label className="block font-medium">Body:</label>
+              <textarea
+                className="w-full p-2 border rounded"
+                value={selectedNode.data.body || ""}
+                onChange={(e) => handleInputChange("body", e.target.value)}
+              />
+            </div>
+          </div>
+        </div>
+      )}
+      <button
+        onClick={saveFlowchart}
+        className="absolute bottom-4 right-4 bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600"
+      >
+        Save Flowchart
+      </button>
     </div>
   );
 };
 
-export default FlowChart;
+export default Flowchart;
