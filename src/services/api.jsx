@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = "http://localhost:1608";
+const API_BASE_URL = "https://schedulernish-be.onrender.com";
 
 export const sendEmail = async (data) => {
   try {
