@@ -1,24 +1,22 @@
 import React, { useContext } from 'react';
 import { AppContext } from './ContextProvider';
-import { sendEmail } from '../services/api'; // Adjust the path as per your file structure
+import { sendEmail } from '../services/api';
 
 function SendEmailComponent() {
   const { nodes } = useContext(AppContext);
 
   const handleSendEmail = async () => {
-    // Transform nodes into the required format
     const emailData = nodes
-      .slice(3) // Skip the first three nodes
+      .slice(3)
       .map((node) => ({
-        emailBody: node.data?.label || '', // Default to an empty string if label is missing
-        subject: node.data?.title || '',  // Default to an empty string if title is missing
+        emailBody: node.data?.label || '',
+        subject: node.data?.title || '', 
       }))
-      .filter((item) => item.emailBody && item.subject); // Ensure both fields are not empty
+      .filter((item) => item.emailBody && item.subject); 
 
-    // Send each email individually
     for (const email of emailData) {
       try {
-        const response = await sendEmail(email); // Send email one by one
+        const response = await sendEmail(email);
         console.log("Email sent successfully:", response);
       } catch (error) {
         console.error(`Error sending email for data: ${JSON.stringify(email)}`, error);

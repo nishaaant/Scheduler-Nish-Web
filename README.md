@@ -1,8 +1,35 @@
-# React + Vite
+# Scheduler-Nish-Web
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Scheduler-Nish-Web is the frontend application for a scheduling tool that allows users to manage and schedule email campaigns seamlessly. Built using modern frontend tools, this project provides an intuitive and visually interactive user interface.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Interactive flow management using [React Flow](https://reactflow.dev/).
+- Stylish and responsive design with [Tailwind CSS](https://tailwindcss.com/).
+- Optimized for fast development with [Vite](https://vitejs.dev/).
+
+## Tech Stack
+
+- **Framework**: React (with Vite for faster builds)
+- **UI Styling**: Tailwind CSS
+- **Visualization**: React Flow
+
+## Getting Started
+
+### Prerequisites
+
+Ensure you have the following installed:
+
+- [Node.js](https://nodejs.org/) (v16 or later)
+- [npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.com/)
+
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/Scheduler-Nish-Web.git
+   cd Scheduler-Nish-Web
+
+2. Start the development server:
+
+npm run dev
