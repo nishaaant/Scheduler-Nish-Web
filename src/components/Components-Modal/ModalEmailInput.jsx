@@ -13,7 +13,6 @@ const ModalEmailInput = () => {
 
     const addNodes = (type, data, title) => {
 
-        console.log(type, data)
         const label = data.title;
         const findId = nodes.find(item => item.id == nodes.length + 1)
         setNodes((nds) => {
@@ -30,7 +29,6 @@ const ModalEmailInput = () => {
                 return item;
             });
             const node = nds.find(item => item.type === "addMoreNode")
-            console.log(node);
             const newNode = {
                 id: `${findId ? Number(updatedNodes[updatedNodes.length - 1].id) + 1 : updatedNodes.length + 1}`,
                 position: { x: 200, y: node.position.y },
@@ -44,8 +42,6 @@ const ModalEmailInput = () => {
             };
             return [...updatedNodes, newNode];
         });
-
-        console.log(nodes)
         // const updatedEdges = edges.filter(item => item.target !== "n");
         const edge = [...edges, { id: `${findId?Number(nodes[nodes.length-1].id)+1:nodes.length + 1}->2`, source: `2`, target: `${findId?Number(nodes[nodes.length-1].id)+1:nodes.length + 1}`, type: "straight", targetHandle: "a" }, { id: `${nodes.length + 1}->n`, source: `${nodes.length + 1}`, target: "n", type: "straight", sourceHandle: "b" }]
         setEdges(edge);
@@ -65,8 +61,6 @@ const ModalEmailInput = () => {
         setEmailData(item)
         setInputWithData(false, {})
     }
-
-    console.log(addedData)
     return (
         <div className='p-[10px] mt-[20px] text-[18px] h-[500px]'>
             <p className={`${addedData === "email" ? "" : "font-bold"} `}>{addedData === "email" ? "Wait For" : "Email Template"}</p>

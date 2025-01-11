@@ -19,7 +19,6 @@ const ModalButton = () => {
         subTitle:"Add a delay between blocks",
         type:modalData.type
     }
-   console.log() 
     return (
         <div className='p-[10px] h-[500px] cursor-pointer'>
             <h1 className='text-[20px]'>{text}</h1>
@@ -44,7 +43,6 @@ const ModalButton = () => {
                  <h1 className='text-[20px] mt-8'>Conditions</h1>
             <div className='mt-[10px] bg-[#f9f9f9]  w-[400px] p-[15px] rounded-[5px] shadow-lg  border  border-[#d7d7d7] flex items-center gap-4'  onClick={() => {
                  if(addedData=="ReEmail"){
-                    console.log("dfh")
                     setAddedData("email")
                 }
             toggleModal(true, data2)

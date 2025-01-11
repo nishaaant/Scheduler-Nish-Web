@@ -5,7 +5,6 @@ import ModalEmailInput from './ModalEmailInput';
 
 const ModalInput = () => {
     const {modalData}=useContext(AppContext);
-    console.log(modalData)
     
   return (
     <>

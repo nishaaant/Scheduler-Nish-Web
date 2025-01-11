@@ -15,7 +15,6 @@ const ModalLeadInput= () => {
 
     const addNodes = (type, data, title) => {
 
-        console.log(type, data)
         const label = data.map(item => {
             return `${item.title}${data.length > 1 ? ", " : ""}`
         }).join(" ")
@@ -44,7 +43,6 @@ const ModalLeadInput= () => {
             return [...updatedNodes, newNode];
         });
         
-        console.log(nodes)
         const edge = [...edges, { id: `${findId?Number(nodes[nodes.length-1].id)+1:nodes.length + 1}->2`, source: `${findId?Number(nodes[nodes.length-1].id)+1:nodes.length + 1}`, target: "2", type: "straight", targetHandle: "a" }]
         setEdges(edge);
       
