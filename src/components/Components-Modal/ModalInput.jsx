@@ -1,16 +1,20 @@
-import React, { useContext } from 'react'
-import { AppContext } from '../ContextProvider'
-import ModalLeadInput from './ModalLeadInput';
-import ModalEmailInput from './ModalEmailInput';
+import React, { useContext } from "react";
+import { AppContext } from "../ContextProvider";
+import ModalLeadInput from "./ModalLeadInput";
+import ModalEmailInput from "./ModalEmailInput";
 
 const ModalInput = () => {
-    const {modalData}=useContext(AppContext);
-    
-  return (
-    <>
-    {modalData.type==="addLeadSource"?<ModalLeadInput/>:<ModalEmailInput/>}
-    </>
-  )
-}
+	const { modalData } = useContext(AppContext);
 
-export default ModalInput
+	return (
+		<>
+			{modalData.type === "addLeadSource" ? (
+				<ModalLeadInput />
+			) : (
+				<ModalEmailInput />
+			)}
+		</>
+	);
+};
+
+export default ModalInput;
