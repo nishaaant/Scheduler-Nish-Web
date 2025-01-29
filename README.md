@@ -1,6 +1,7 @@
 # Scheduler-Nish-Web
 
 Scheduler-Nish-Web is the frontend application for a scheduling tool that allows users to manage and schedule email campaigns seamlessly. Built using modern frontend tools, this project provides an intuitive and visually interactive user interface.
+Access at : https://scheduler-nish-web.vercel.app/
 
 ## Features
 
